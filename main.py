@@ -9,6 +9,7 @@ def play_number_guessing_game():
     attempt = 1 
     win = 0
     lose = 0
+    play = 1
 
     print(f"\n***** Game Start *****")
     print(f"*** Max guess limit {max_guess_limit} ***")
@@ -46,7 +47,6 @@ def play_number_guessing_game():
 
         max_guess_limit = max_guess_limit - 1
         attempt = attempt + 1
-        play = 1
         
     # Game over check
     if max_guess_limit == 0:
@@ -74,8 +74,8 @@ while True:
     
     if replay == "n":
         print(f"\n🥳 Game End!\n")
-        print(f"You play {game_play} round.")
-        print(f"Won {total_win} & Lost {total_lose}.")
+        print(f"▶️ You played {game_play} round.")
+        print(f"🏆 Won {total_win} & 😔 Lost {total_lose}.")
         break
         
     else:
