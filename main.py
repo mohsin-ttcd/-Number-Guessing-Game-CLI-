@@ -47,7 +47,7 @@ def play_number_guessing_game():
     if max_guess_limit == 0:
         print("\n❌ Game Over!")
         print("❌ You hit the max limit!\n")
-        print(f"🎯 Target limit was {max_guess_limit}")
+        print(f"🎯 Target number was {target_number}")
 
 
 # Main loop 
@@ -55,7 +55,7 @@ def play_number_guessing_game():
 while True:
     play_number_guessing_game()
 
-    replay = input(f"Did you want to play again? y/n: ").lower()
+    replay = input(f"Do you want to play again? y/n: ").lower()
 
     if replay == "n":
         print(f"\n🥳 Game End!\n")
