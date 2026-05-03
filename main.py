@@ -1,19 +1,16 @@
-# number guessing game
-
 #import random module
 import random
 
-#wrape number guessing game inside a function
+# Number guessing game inside a function
 def play_number_guessing_game():
 
-    #target and max guess limit
     target_number = random.randint(0,20)
     max_guess_limit = 5
-    attempt = 1
-    
-    
+    attempt = 1 
+    win = 0
+    lose = 0
 
-    print(f"***** Game Start *****")
+    print(f"\n***** Game Start *****")
     print(f"*** Max guess limit {max_guess_limit} ***")
     print(f"Enter number between 0 - 20\n")
 
@@ -36,6 +33,7 @@ def play_number_guessing_game():
             print(f"🎯 Target number was {target_number}")
             print(f"🎮 You enter: {user_input}")
             print(f"👆 You have tried {attempt} times.\n")
+            win = 1
             break
         
         elif user_input > target_number:
@@ -48,23 +46,36 @@ def play_number_guessing_game():
 
         max_guess_limit = max_guess_limit - 1
         attempt = attempt + 1
-
+        play = 1
+        
     # Game over check
     if max_guess_limit == 0:
         print("\n❌ Game Over!")
         print("❌ You hit the max limit!")
         print(f"🎯 Target number was {target_number}\n")
+        lose = 1
 
+    return win, lose, play
+
+total_win = 0
+total_lose = 0
+game_play = 0
 
 # Main loop 
 # Run the game
 while True:
-    play_number_guessing_game()
+
+    win, lose, play = play_number_guessing_game()
+    total_win += win
+    total_lose += lose
+    game_play += play
 
     replay = input(f"Do you want to play again? y/n: ").lower()
-
+    
     if replay == "n":
         print(f"\n🥳 Game End!\n")
+        print(f"You play {game_play} round.")
+        print(f"Won {total_win} & Lost {total_lose}.")
         break
         
     else:
