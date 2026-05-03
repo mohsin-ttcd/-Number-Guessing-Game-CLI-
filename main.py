@@ -12,7 +12,12 @@ print(f"Enter number between 0 - 20\n")
 
 while max_guess_limit > 0:
 
-    user_input = int(input("Guess The Number: "))
+    try:
+        user_input = int(input("Guess The Number: "))
+    
+    except ValueError:
+        print("Please enter a integer number between 0 - 20")
+        continue
 
     if user_input == target_number:
         print(f"\n🥇 You won the game!")
