@@ -70,7 +70,16 @@ while True:
     total_lose += lose
     game_play += play
 
-    replay = input(f"Do you want to play again? y/n: ").lower()
+
+    while True:
+
+        replay = input(f"Do you want to play again? y/n: ").lower()
+
+        if replay == "y" or replay == "n":
+            break
+        else:
+            print(f"\n❌ Invalid input! Please enter 'y' for yes and 'n' for no.")
+
     
     if replay == "n":
         print(f"\n🥳 Game End!\n")
@@ -80,3 +89,7 @@ while True:
         
     else:
         continue
+
+
+# New feature to add 
+# tracking the fewest number of attempts it took to win
