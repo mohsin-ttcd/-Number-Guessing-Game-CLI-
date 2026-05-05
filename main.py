@@ -1,6 +1,33 @@
 #import random module
 import random
 
+
+# choose a range (1–50, 1–100) function.
+def difficulty_level(lower_bound):
+
+    print(f"\n***** Welcome to the Custom Number Guessing Game! *****\n")
+    print(f"⚓ Choose your difficulty level!")
+    print(f"🔈 Max guess limit up to 7 and lower bound will be {lower_bound}.\n")
+
+    # Take input and validate it
+    while True:
+
+        try:
+            target_between = int(input(f"Enter the highest number you want to guess up to (eg: 50, 100, 500):... "))
+
+            if target_between >= lower_bound:
+                break
+            else:
+                print(f"\n❌ {target_between} is less than {lower_bound}.")
+                print(f"🔈 Please enter an integer number greater than {lower_bound}.\n")
+
+        except ValueError:
+            print(f"\n ❌ Invalid input, Please enter an integer number greater than {lower_bound}.\n")
+            continue
+
+    print(f"\n✅ Awesome! Setting up a game from 0 to {target_between}.\n")
+
+    return target_between
 # Number guessing game inside a function
 def play_number_guessing_game(max_guess_limit, target_between):
 
@@ -56,18 +83,20 @@ def play_number_guessing_game(max_guess_limit, target_between):
 
     return win, lose, play, attempt
 
-target_between = 20
-max_guess_limit = 5
+lower_bound = 50
+max_guess_limit = 7
 total_win = 0
 total_lose = 0
 game_play = 0
 best_score = []
 
+# Let the player choose a range (1–50, 1–100)
+target_between = difficulty_level(lower_bound)
+
 # Main loop 
 # Run the game
 while True:
-
-    win, lose, play, attempt= play_number_guessing_game(max_guess_limit,target_between)
+    win, lose, play, attempt= play_number_guessing_game(max_guess_limit, target_between)
     total_win += win
     total_lose += lose
     game_play += play
@@ -101,9 +130,12 @@ while True:
         else:
             print(f"No wins yet")
         print(f"▶️  You played {game_play} round.")
-        print(f"🏆 Won {total_win} & 😔 Lost {total_lose}.")
+        print(f"🏆 Won {total_win} & 😔 Lost {total_lose}.\n")
         break
         
     else:
         continue
 
+
+#next feature Dynamic Difficulty
+#Tier" Strategy or the really cool "Math" Strategy! that use search engine 
