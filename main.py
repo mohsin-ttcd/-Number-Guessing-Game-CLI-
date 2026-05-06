@@ -6,7 +6,7 @@ def max_difficult_target(lower_bound, lowest_guess):
 
     print(f"\n***** Welcome to the Custom Number Guessing Game! *****\n")
     print(f"⚓ Choose your difficulty level!")
-    print(f"🔈 Lowest guess limit {lowest_guess} and it will be increment by max target number, also the lower bound is {lower_bound}.\n")
+    print(f"🔈 Lowest guess limit {lowest_guess} and it will be increment with max target number, also the lower bound is {lower_bound}.\n")
 
     # Take input and validate it
     while True:
@@ -28,27 +28,37 @@ def max_difficult_target(lower_bound, lowest_guess):
 
     return target_between
 
-# Dynamic Difficulty
+# Dynamic Difficulty for easy, mediem and hard level
 def dynamic_difficulty_level(target_between, lowest_guess):
         
+    def between_thousand(target_between):
+
+        guess_number = target_between - 100
+        #The "Add-a-Little" Logic {(a + b - 1) // b}
+        max_guess_limit = lowest_guess + (( guess_number + 200 - 1 ) // 200)
+
+        return max_guess_limit + 1
+    
     #easy
     if target_between <= 100:
-        return lowest_guess
+        max_guess_limit = lowest_guess
+        return max_guess_limit
 
     #medium
     elif target_between <= 1000:
+        max_guess_limit = between_thousand(target_between)
 
-        guess_number = target_between - 100
-        guess_increment = lowest_guess + (( guess_number + 100 - 1 ) // 100)
-
-        return guess_increment + 1
+        return max_guess_limit
     
     # hard
     else:
         guess_number = target_between - 1000
+        # The "Negative Flip" Logic {−(−a//b)}
         guess_increment = - ( - guess_number // 200 )
+        max_guess_limit = between_thousand(target_between)
+        max_guess_limit = max_guess_limit + guess_increment
 
-    return guess_increment + 12
+    return max_guess_limit 
 
 # Number guessing game inside a function
 def play_number_guessing_game(max_guess_limit, target_between):
