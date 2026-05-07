@@ -1,12 +1,13 @@
-#import random module
+#import module
 import random
+import math
 
 # choose a range (1–50, 1–100) function.
 def max_difficult_target(lower_bound, lowest_guess):
 
     print(f"\n***** Welcome to the Custom Number Guessing Game! *****\n")
     print(f"⚓ Choose your difficulty level!")
-    print(f"🔈 Lowest guess limit {lowest_guess} and it will be increment with max target number, also the lower bound is {lower_bound}.\n")
+    print(f"🔈 Lowest guess limit {lowest_guess} and it will be increase with max target number, also the lower bound is {lower_bound}.\n")
 
     # Take input and validate it
     while True:
@@ -29,36 +30,11 @@ def max_difficult_target(lower_bound, lowest_guess):
     return target_between
 
 # Dynamic Difficulty for easy, mediem and hard level
-def dynamic_difficulty_level(target_between, lowest_guess):
-        
-    def between_thousand(target_between):
+# Using binary search method
+def dynamic_difficulty_level(target_between):
 
-        guess_number = target_between - 100
-        #The "Add-a-Little" Logic {(a + b - 1) // b}
-        max_guess_limit = lowest_guess + (( guess_number + 200 - 1 ) // 200)
-
-        return max_guess_limit + 1
-    
-    #easy
-    if target_between <= 100:
-        max_guess_limit = lowest_guess
-        return max_guess_limit
-
-    #medium
-    elif target_between <= 1000:
-        max_guess_limit = between_thousand(target_between)
-
-        return max_guess_limit
-    
-    # hard
-    else:
-        guess_number = target_between - 1000
-        # The "Negative Flip" Logic {−(−a//b)}
-        guess_increment = - ( - guess_number // 200 )
-        max_guess_limit = between_thousand(target_between)
-        max_guess_limit = max_guess_limit + guess_increment
-
-    return max_guess_limit 
+    max_guess_limit = math.ceil(math.log2(target_between)) + 1
+    return max_guess_limit
 
 # Number guessing game inside a function
 def play_number_guessing_game(max_guess_limit, target_between):
@@ -124,7 +100,7 @@ best_score = []
 
 # Let the player choose a range (1–50, 1–100)
 target_between = max_difficult_target(lower_bound, lowest_guess)
-max_guess_limit = dynamic_difficulty_level(target_between, lowest_guess)
+max_guess_limit = dynamic_difficulty_level(target_between)
 
 # Main loop 
 # Run the game
@@ -134,7 +110,6 @@ while True:
     total_lose += lose
     game_play += play
     
-    # New feature to add 
     # tracking the fewest number of attempts it took to win
     if win == 1:
         if best_score == []:
@@ -158,10 +133,12 @@ while True:
     
     if replay == "n":
         print(f"\n🥳 Game End!\n")
+
         if len(best_score) > 0:
             print(f"🎉 New Record {best_score[0]}")
         else:
             print(f"No wins yet")
+            
         print(f"▶️  You played {game_play} round.")
         print(f"🏆 Won {total_win} & 😔 Lost {total_lose}.\n")
         break
@@ -170,5 +147,4 @@ while True:
         continue
 
 
-#next feature Dynamic Difficulty
-#Tier" Strategy or the really cool "Math" Strategy! that use search engine 
+#next update dynamic_difficulty_level function with binary search logic
