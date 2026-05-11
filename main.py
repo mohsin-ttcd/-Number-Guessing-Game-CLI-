@@ -147,4 +147,14 @@ while True:
         continue
 
 
-#next update dynamic_difficulty_level function with binary search logic
+# Next 
+# add Save the High Score to a File and add a Hint System
+
+# What’s the Next Level?
+
+# The "Hot or Cold" Hint System: Tell the player if they are "getting warmer" (their current guess is closer to the target than their last guess).
+
+# File Memory: Learn how to use open("highscore.txt", "w") so your computer remembers the "New Record" even after you turn the computer off.
+
+# The Computer's Turn: Write a function where you think of a number, and the computer uses Binary Search to guess it from you!
+
