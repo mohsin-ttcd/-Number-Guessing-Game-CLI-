@@ -1,6 +1,37 @@
 #import module
 import random
 import math
+import os
+
+def player_record(file_name, game_play, total_win, total_lose, best_score):
+    header = "game_play|total_win|total_lose|best_score"
+
+    for i in  best_score:
+        best_score = i
+        
+    data_list = [game_play,total_win,total_lose,best_score]
+    # player_data = f"{game_play}|{total_win}|{total_lose}|{best_score}"
+    player_data = "|".join(map(str, data_list))
+
+
+    if os.path.exists(file_name):
+        with open(file_name, "r") as f:
+            existing_header = f.readline().strip()
+
+            if existing_header == header:
+                with open(file_name, "a") as f:
+                    f.write("\n" + player_data)
+            
+            else:
+                with open(file_name, "a") as f:
+                    f.write(header + "\n")
+                    f.write(player_data)
+
+    else:
+        with open(file_name, "a") as f:
+            f.write(header + "\n")
+            f.write(player_data)
+
 
 # choose a range (1–50, 1–100) function.
 def max_difficult_target(lower_bound, lowest_guess):
@@ -91,6 +122,7 @@ def play_number_guessing_game(max_guess_limit, target_between):
 
     return win, lose, play, attempt
 
+file_name = "scoretracking.txt"
 lowest_guess = 7
 lower_bound = 50
 total_win = 0
@@ -132,6 +164,7 @@ while True:
 
     
     if replay == "n":
+        player_record(file_name, game_play, total_win, total_lose, best_score)
         print(f"\n🥳 Game End!\n")
 
         if len(best_score) > 0:
@@ -146,15 +179,4 @@ while True:
     else:
         continue
 
-
-# Next 
-# add Save the High Score to a File and add a Hint System
-
-# What’s the Next Level?
-
-# The "Hot or Cold" Hint System: Tell the player if they are "getting warmer" (their current guess is closer to the target than their last guess).
-
-# File Memory: Learn how to use open("highscore.txt", "w") so your computer remembers the "New Record" even after you turn the computer off.
-
-# The Computer's Turn: Write a function where you think of a number, and the computer uses Binary Search to guess it from you!
 
