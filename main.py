@@ -4,10 +4,48 @@ import math
 import os
 
 def player_record(file_name, game_play, total_win, total_lose, best_score):
+    """
+    Save all game record / history in a text file
+    We can access data later from there
+    """
+
+    def update_best_score(filename, best_score):
+
+        """
+        Reads a file to find the saved best score.
+        Since a LOWER number is better, it compares the saved score 
+        with the current score and returns the lowest of the two.
+        """
+
+        if os.path.exists(filename):
+            with open(filename, "r") as f:
+                lines  = f.readlines()
+
+                if len(lines) > 1:
+                    last_line = lines[-1]
+                    all_score = last_line.strip().split("|")
+
+                    line_best_score = all_score[-1]
+                    saved_best_score = int(line_best_score.strip())
+
+                    if saved_best_score > best_score:
+                        return best_score
+                    else:
+                        return saved_best_score
+                
+                else:
+                    return best_score
+        
+        else:
+            return best_score
+
+
     header = "game_play|total_win|total_lose|best_score"
 
     for i in  best_score:
         best_score = i
+
+    best_score = update_best_score(file_name, best_score)    
         
     data_list = [game_play,total_win,total_lose,best_score]
     # player_data = f"{game_play}|{total_win}|{total_lose}|{best_score}"
