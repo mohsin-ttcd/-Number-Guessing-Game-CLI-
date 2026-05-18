@@ -28,11 +28,23 @@ def player_record(file_name, game_play, total_win, total_lose, best_score):
                     line_best_score = all_score[-1]
                     saved_best_score = int(line_best_score.strip())
 
-                    if saved_best_score > best_score:
-                        return best_score
-                    else:
-                        return saved_best_score
-                
+                    try:
+                        if len(best_score) != 0:
+
+                            if saved_best_score > best_score:
+                                return best_score
+                            else:
+                                return saved_best_score
+                        else:
+                            return saved_best_score
+                    
+                    except TypeError:
+                        if saved_best_score > best_score:
+                            return best_score
+                        else:
+                            return saved_best_score
+
+                                    
                 else:
                     return best_score
         
@@ -166,7 +178,7 @@ lower_bound = 50
 total_win = 0
 total_lose = 0
 game_play = 0
-best_score = []
+best_score = [] 
 
 # Let the player choose a range (1–50, 1–100)
 target_between = max_difficult_target(lower_bound, lowest_guess)
@@ -190,6 +202,7 @@ while True:
                 if i > attempt:
                     best_score = [attempt]
 
+
     # Replay input validation
     while True:
 
@@ -208,7 +221,7 @@ while True:
         if len(best_score) > 0:
             print(f"🎉 New Record {best_score[0]}")
         else:
-            print(f"No wins yet")
+            print(f"🔈  No wins yet")
             
         print(f"▶️  You played {game_play} round.")
         print(f"🏆 Won {total_win} & 😔 Lost {total_lose}.\n")
