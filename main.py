@@ -3,6 +3,54 @@ import random
 import math
 import os
 
+def history_tracker(file_name):
+    if os.path.exists(file_name) and os.path.getsize(file_name) > 0:
+        with open(file_name, "r") as f:
+            header = f.readline().strip().split("|")
+
+            if not header:
+                print("👋  Welcome! enjoy the game.")
+            
+            else:
+                raw_data = f.readlines()
+
+                score_data = []
+
+                for row in raw_data:
+                    score_data.append(list(map(int, row.strip().split("|"))))
+                
+                game_history = {
+                    # "header" : 0,
+
+                }
+
+                # update blank dictionary with key (header) and value (0)
+                for word in header:
+                    game_history[word] = 0
+
+                if score_data:
+
+                    # update value with score data by their key name without "best_score"
+                    for row in score_data:
+                        for num in range(len(row) - 1):
+                            current_header = header[num]
+
+                            game_history[current_header] += row[num]
+
+                    # update best score value
+                    game_history[header[-1]] = score_data[-1][-1]
+
+                    print(f"Total Games Played: {game_history["game_play"]}")
+                    print(f"Total Wins: {game_history["total_win"]}")
+                    print(f"Total lose: {game_history["total_lose"]}")
+                    print(f"All time best score: {game_history["best_score"]}")
+
+                else:
+                    print("👋  Welcome! enjoy the game.")
+    else:
+        print("👋  Welcome! enjoy the game.")
+
+
 def player_record(file_name, game_play, total_win, total_lose, best_score):
     """
     Save all game record / history in a text file
@@ -180,6 +228,9 @@ total_lose = 0
 game_play = 0
 best_score = [] 
 
+#test
+data = history_tracker(file_name)
+
 # Let the player choose a range (1–50, 1–100)
 target_between = max_difficult_target(lower_bound, lowest_guess)
 max_guess_limit = dynamic_difficulty_level(target_between)
@@ -216,7 +267,11 @@ while True:
     
     if replay == "n":
         player_record(file_name, game_play, total_win, total_lose, best_score)
-        print(f"\n🥳 Game End!\n")
+        print()
+        print("=" * 14)
+        print(f"🥳 Game End!")
+        print("=" * 14)
+        print("[THIS MATCH]")
 
         if len(best_score) > 0:
             print(f"🎉 New Record {best_score[0]}")
@@ -225,6 +280,9 @@ while True:
             
         print(f"▶️  You played {game_play} round.")
         print(f"🏆 Won {total_win} & 😔 Lost {total_lose}.\n")
+
+        print("[LIFETIME STATS]")
+        history_tracker(file_name)
         break
         
     else:
