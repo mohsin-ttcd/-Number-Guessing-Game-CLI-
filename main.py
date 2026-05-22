@@ -1,6 +1,87 @@
 #import module
 import random
 import math
+import os
+
+def player_record(file_name, game_play, total_win, total_lose, best_score):
+    """
+    Save all game record / history in a text file
+    We can access data later from there
+    """
+
+    def update_best_score(filename, best_score):
+
+        """
+        Reads a file to find the saved best score.
+        Since a LOWER number is better, it compares the saved score 
+        with the current score and returns the lowest of the two.
+        """
+
+        if os.path.exists(filename):
+            with open(filename, "r") as f:
+                lines  = f.readlines()
+
+                if len(lines) > 1:
+                    last_line = lines[-1]
+                    all_score = last_line.strip().split("|")
+
+                    line_best_score = all_score[-1]
+                    saved_best_score = int(line_best_score.strip())
+
+                    try:
+                        if len(best_score) != 0:
+
+                            if saved_best_score > best_score:
+                                return best_score
+                            else:
+                                return saved_best_score
+                        else:
+                            return saved_best_score
+                    
+                    except TypeError:
+                        if saved_best_score > best_score:
+                            return best_score
+                        else:
+                            return saved_best_score
+
+                                    
+                else:
+                    return best_score
+        
+        else:
+            return best_score
+
+
+    header = "game_play|total_win|total_lose|best_score"
+
+    for i in  best_score:
+        best_score = i
+
+    best_score = update_best_score(file_name, best_score)    
+        
+    data_list = [game_play,total_win,total_lose,best_score]
+    # player_data = f"{game_play}|{total_win}|{total_lose}|{best_score}"
+    player_data = "|".join(map(str, data_list))
+
+
+    if os.path.exists(file_name):
+        with open(file_name, "r") as f:
+            existing_header = f.readline().strip()
+
+            if existing_header == header:
+                with open(file_name, "a") as f:
+                    f.write("\n" + player_data)
+            
+            else:
+                with open(file_name, "a") as f:
+                    f.write(header + "\n")
+                    f.write(player_data)
+
+    else:
+        with open(file_name, "a") as f:
+            f.write(header + "\n")
+            f.write(player_data)
+
 
 # choose a range (1–50, 1–100) function.
 def max_difficult_target(lower_bound, lowest_guess):
@@ -91,12 +172,13 @@ def play_number_guessing_game(max_guess_limit, target_between):
 
     return win, lose, play, attempt
 
+file_name = "scoretracking.txt"
 lowest_guess = 7
 lower_bound = 50
 total_win = 0
 total_lose = 0
 game_play = 0
-best_score = []
+best_score = [] 
 
 # Let the player choose a range (1–50, 1–100)
 target_between = max_difficult_target(lower_bound, lowest_guess)
@@ -120,6 +202,7 @@ while True:
                 if i > attempt:
                     best_score = [attempt]
 
+
     # Replay input validation
     while True:
 
@@ -132,12 +215,13 @@ while True:
 
     
     if replay == "n":
+        player_record(file_name, game_play, total_win, total_lose, best_score)
         print(f"\n🥳 Game End!\n")
 
         if len(best_score) > 0:
             print(f"🎉 New Record {best_score[0]}")
         else:
-            print(f"No wins yet")
+            print(f"🔈  No wins yet")
             
         print(f"▶️  You played {game_play} round.")
         print(f"🏆 Won {total_win} & 😔 Lost {total_lose}.\n")
@@ -147,4 +231,3 @@ while True:
         continue
 
 
-#next update dynamic_difficulty_level function with binary search logic
