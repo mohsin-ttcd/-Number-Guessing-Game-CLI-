@@ -40,25 +40,17 @@ def history_tracker(file_name):
                     # update best score value
                     game_history[header[-1]] = score_data[-1][-1]
 
-                    print(f"Total Games Played: {game_history["game_play"]}")
-                    print(f"Total Wins: {game_history["total_win"]}")
-                    print(f"Total lose: {game_history["total_lose"]}")
-                    print(f"All time best score: {game_history["best_score"]}")
+                    header_list = list(game_history.keys())
+                    
+                    return game_history, header_list
 
                 else:
                     print("👋  Welcome! enjoy the game.")
     else:
         print("👋  Welcome! enjoy the game.")
 
-
-def player_record(file_name, game_play, total_win, total_lose, best_score):
-    """
-    Save all game record / history in a text file
-    We can access data later from there
-    """
-
-    def update_best_score(filename, best_score):
-
+def update_best_score(filename, best_score):
+        
         """
         Reads a file to find the saved best score.
         Since a LOWER number is better, it compares the saved score 
@@ -71,39 +63,34 @@ def player_record(file_name, game_play, total_win, total_lose, best_score):
 
                 if len(lines) > 1:
                     last_line = lines[-1]
-                    all_score = last_line.strip().split("|")
+                    last_line_score = last_line.strip().split("|")
 
-                    line_best_score = all_score[-1]
-                    saved_best_score = int(line_best_score.strip())
+                    last_line_score_best_score = last_line_score[-1]
+                    saved_best_score = int(last_line_score_best_score.strip())
 
-                    try:
-                        if len(best_score) != 0:
+                    if best_score != 0:
 
-                            if saved_best_score > best_score:
-                                return best_score
-                            else:
-                                return saved_best_score
-                        else:
-                            return saved_best_score
-                    
-                    except TypeError:
                         if saved_best_score > best_score:
                             return best_score
                         else:
                             return saved_best_score
+                    else:
+                        return saved_best_score
 
                                     
                 else:
                     return best_score
-        
+
         else:
             return best_score
 
+def player_record(file_name, game_play, total_win, total_lose, best_score):
+    """
+    Save all game record / history in a text file
+    We can access data later from there
+    """
 
     header = "game_play|total_win|total_lose|best_score"
-
-    for i in  best_score:
-        best_score = i
 
     best_score = update_best_score(file_name, best_score)    
         
@@ -226,10 +213,10 @@ lower_bound = 50
 total_win = 0
 total_lose = 0
 game_play = 0
-best_score = [] 
+best_score = []
 
 #test
-data = history_tracker(file_name)
+# data = history_tracker(file_name)
 
 # Let the player choose a range (1–50, 1–100)
 target_between = max_difficult_target(lower_bound, lowest_guess)
@@ -249,9 +236,8 @@ while True:
             best_score.append(attempt)
         
         else:
-            for i in best_score:
-                if i > attempt:
-                    best_score = [attempt]
+            if best_score[0] > attempt:
+                best_score[0] = attempt
 
 
     # Replay input validation
@@ -266,23 +252,30 @@ while True:
 
     
     if replay == "n":
-        player_record(file_name, game_play, total_win, total_lose, best_score)
+        if len(best_score) == 0:
+            best_score = [0]
+        player_record(file_name, game_play, total_win, total_lose, best_score[0])
         print()
         print("=" * 14)
         print(f"🥳 Game End!")
         print("=" * 14)
         print("[THIS MATCH]")
 
-        if len(best_score) > 0:
+        if len(best_score) > 0 and best_score[0] != 0:
             print(f"🎉 New Record {best_score[0]}")
         else:
             print(f"🔈  No wins yet")
             
-        print(f"▶️  You played {game_play} round.")
-        print(f"🏆 Won {total_win} & 😔 Lost {total_lose}.\n")
+        print(f"▶️   You played {game_play} round.")
+        print(f"🏆  Won {total_win} & 😔 Lost {total_lose}.\n")
 
         print("[LIFETIME STATS]")
-        history_tracker(file_name)
+        game_history_data, header = history_tracker(file_name)
+
+        print(f"⚓  Total Games Played: {game_history_data[header[0]]}")
+        print(f"🏆  Total Wins: {game_history_data[header[1]]}")
+        print(f"😔  Total lose: {game_history_data[header[2]]}")
+        print(f"🥇  All time best score: {game_history_data[header[3]]}\n")
         break
         
     else:
